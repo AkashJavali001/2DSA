@@ -1,0 +1,131 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+int count = 0;
+
+struct stud {
+    long long int ph;
+    int sem;
+    char name[15], usn[15], brnch[8];
+    struct stud *next;
+} *head = NULL, *tail = NULL;
+
+void create(long long int n, int s, char na[], char u[], char b[]) {
+    struct stud *temp = (struct stud*)malloc(sizeof(struct stud));
+    temp->ph = n;
+    temp->sem = s;
+    strcpy(temp->name, na);
+    strcpy(temp->usn, u);
+    strcpy(temp->brnch, b);
+    temp->next = NULL;
+    if (!head) head = tail = temp;
+    else {
+        tail->next = temp;
+        tail = temp;
+    }
+    count++;
+}
+
+void display() {
+    struct stud *temp1 = head;
+    if (!temp1) printf("\nlist is empty:\n");
+    else {
+        printf("Students details are as follows:\n");
+        while (temp1 != NULL) {
+            printf("\n");
+            printf("NAME:%s\nUSN:%s\nBRANCH:%s\nSEM:%d\nPHONE NO.:%lld\n", temp1->name, temp1->usn, temp1->brnch, temp1->sem, temp1->ph);
+            printf("\n");
+            temp1 = temp1->next;
+        }
+        printf("No of nodes = %d\n", count);
+    }
+}
+
+void insert_head(long long int n, int s, char na[], char u[], char b[]) {
+    struct stud *temp = (struct stud*)malloc(sizeof(struct stud));
+    temp->ph = n;
+    temp->sem = s;
+    strcpy(temp->name, na);
+    strcpy(temp->usn, u);
+    strcpy(temp->brnch, b);
+    temp->next = head;
+    head = temp;
+    count++;
+}
+
+void insert_tail(long long int n, int s, char na[], char u[], char b[]) {
+    create(n, s, na, u, b);
+}
+
+void delete_head() {
+    if (!head) printf("List is empty\n");
+    else {
+        struct stud *temp1 = head;
+        head = head->next;
+        printf("Deleted node is:\n");
+        printf("NAME:%s\nUSN:%s\nBRANCH:%s\nSEM:%d\nPHONE NO.:%lld\n\n", temp1->name, temp1->usn, temp1->brnch, temp1->sem, temp1->ph);
+        free(temp1);
+        count--;
+    }
+}
+
+void delete_tail() {
+    if (!head) printf("List is empty\n");
+    else if (head->next == NULL) {
+        delete_head();
+    } else {
+        struct stud *temp1 = head;
+        while (temp1->next->next != NULL)
+            temp1 = temp1->next;
+        printf("Deleted node is:\n");
+        printf("NAME:%s\nUSN:%s\nBRANCH:%s\nSEM:%d\nPHONE NO.:%lld\n\n", tail->name, tail->usn, tail->brnch, tail->sem, tail->ph);
+        free(tail);
+        tail = temp1;
+        tail->next = NULL;
+        count--;
+    }
+}
+
+int main() {
+    int choice;
+    long long int ph;
+    int sem;
+    char name[20], usn[15], brnch[5];
+    while (1) {
+        printf("---MENU---\n");
+        printf("1.Create\n2.Insert at beginning\n3.Insert at end\n4.Delete at beginning\n5.Delete at end\n6.Display\n7.Exit\n");
+        printf("\nEnter Your Choice:");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                printf("Enter name(char), USN(char), branch(char), sem(int), phno.(int) of the student respectively:\n");
+                scanf("%s%s%s%d%lld", name, usn, brnch, &sem, &ph);
+                create(ph, sem, name, usn, brnch);
+                break;
+            case 2:
+                printf("Enter name(char), USN(char), branch(char), sem(int), phno.(int) of the student respectively:\n");
+                scanf("%s%s%s%d%lld", name, usn, brnch, &sem, &ph);
+                insert_head(ph, sem, name, usn, brnch);
+                break;
+            case 3:
+                printf("Enter name(char), USN(char), branch(char), sem(int), phno.(int) of the student respectively:\n");
+                scanf("%s%s%s%d%lld", name, usn, brnch, &sem, &ph);
+                insert_tail(ph, sem, name, usn, brnch);
+                break;
+            case 4:
+                delete_head();
+                break;
+            case 5:
+                delete_tail();
+                break;
+            case 6:
+                display();
+                break;
+            case 7:
+                exit(0);
+            default:
+                printf("Invalid option\n");
+        }
+    }
+}

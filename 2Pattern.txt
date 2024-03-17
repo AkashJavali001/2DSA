@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char STR[100], PAT[100], REP[100], ans[100];
+    int i = 0, j = 0, c = 0, m = 0, k = 0, flag = 0;
+    
+    printf("\nEnter the MAIN string:\n");
+    gets(STR);
+    printf("\nEnter a PATTERN string:\n");
+    gets(PAT);
+    printf("\nEnter a REPLACE string:\n");
+    gets(REP);
+    
+    while (STR[c]) {
+        if (STR[m] == PAT[i]) {
+            i++;
+            m++;
+            flag = 1;
+            if (!PAT[i]) {
+                for (k = 0; REP[k]; k++, j++) {
+                    ans[j] = REP[k];
+                    i = 0;
+                    c = m;
+                }
+            }
+        } else {
+            ans[j++] = STR[c++];
+            m = c;
+            i = 0;
+        }
+    }
+    if (!flag) printf("Pattern not found!!!\n");
+    else {
+        ans[j] = '\0';
+        printf("\nThe RESULTANT string is %s\n", ans);
+    }
+    return 0;
+}

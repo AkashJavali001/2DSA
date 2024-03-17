@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 10
+
+struct employee {
+    int id;
+    char name[15];
+};
+
+typedef struct employee EMP;
+
+EMP emp[MAX];
+int a[MAX];
+
+int create(int num) {
+    return num % 100;
+}
+
+void getemp(EMP emp[], int key) {
+    printf("\nEnter emp id: ");
+    scanf("%d", &emp[key].id);
+    printf("Enter emp name: ");
+    scanf("%s", emp[key].name);
+}
+
+void display() {
+    int i;
+    printf("\nHTKey\tEmpID\tEmpName");
+    for (i = 0; i < MAX; i++) {
+        if (a[i] != -1) {
+            printf("\n%d\t%d\t%s", i, emp[i].id, emp[i].name);
+        }
+    }
+}
+
+void linear_prob(int key, int num) {
+    if (a[key] == -1) {
+        a[key] = num;
+    } else {
+        int i = key;
+        while (a[i] != -1) {
+            i = (i + 1) % MAX;
+            if (i == key) {
+                printf("\nHash table is full.");
+                display();
+                exit(1);
+            }
+        }
+        a[i] = num;
+    }
+}
+
+int main() {
+    int num, key, ans = 1;
+    printf("\nCollision handling by linear probing: ");
+    for (int i = 0; i < MAX; i++) {
+        a[i] = -1;
+    }
+    do {
+        printf("\nEnter the data: ");
+        scanf("%d", &num);
+        key = create(num);
+        linear_prob(key, num);
+        printf("Do you wish to continue? (1/0): ");
+        scanf("%d", &ans);
+    } while (ans);
+    display();
+    return 0;
+}
